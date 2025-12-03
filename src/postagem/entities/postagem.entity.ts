@@ -1,10 +1,10 @@
 import { IsNotEmpty } from "class-validator";
-import { Column, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity({name: "tb_postagens"})  // Indicando que a classe é uma Entidade/Model
 export class Postagem {
 
-    @PrimaryColumn() // Chave Primária e Auto Incremental
+     @PrimaryGeneratedColumn() // Chave Primária e Auto Incremental
     id: number;
 
     @IsNotEmpty()  // Validador de Objeto 
@@ -15,6 +15,6 @@ export class Postagem {
     @Column({ length: 1000, nullable: false })  // Tamanho Máximo: 1000 |Regra do MYSQL - NOT NULL do MYSQL
     texto: string;
 
-    @UpdateDateColumn()
-    data: Date;
+    @UpdateDateColumn()  // Atualiza automaticamente a data sempre que o registro for editado
+    data: Date;   // Armazena a data da última atualização do registro
 }
