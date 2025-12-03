@@ -3,6 +3,7 @@ import { ILike, Repository } from "typeorm";
 import { Postagem } from "../entities/postagem.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult } from "typeorm/browser";
+import { TemaService } from "../../tema/services/tema.service";
 
 @Injectable()  //Indica que a classe é de serviço e pode ser inserida/injetada em outras classes
 export class PostagemService {
@@ -10,7 +11,8 @@ export class PostagemService {
     // Iniciando ferramentas para classe de Serviço
     constructor(
         @InjectRepository(Postagem) // Injeta o repositório da entidade Postagem para acessar o banco de dados
-        private postagemRepository: Repository<Postagem> // Declara o repositório que será usado nos métodos
+        private postagemRepository: Repository<Postagem>, // Declara o repositório que será usado nos métodos
+        private temaService:TemaService
     ) { } // Construtor da classe (executado quando o service é criado)
 
     async findAll(): Promise<Postagem[]> { // Método assíncrono que retorna uma lista de Postagens
@@ -40,11 +42,13 @@ export class PostagemService {
     }
 
     async create(postagem: Postagem): Promise<Postagem>{  // Método para criar (salvar) uma nova postagem
+        await this.temaService.findById(postagem.tema.id) // é usada para buscar um objeto ou registro de "Tema" em um banco de dados 
         return await this.postagemRepository.save(postagem);  // Salva a postagem no banco
     }
 
     async update(postagem: Postagem): Promise<Postagem> {  // Método para atualizar uma postagem existente
         await this.findById(postagem.id)   // Verifica se a postagem existe antes de atualizar
+        await this.temaService.findById(postagem.tema.id)  // // é usada para buscar um objeto ou registro de "Tema" em um banco de dados 
         return await this.postagemRepository.save(postagem);  // Atualiza os dados no banco
     }
 
