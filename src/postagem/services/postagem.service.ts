@@ -15,15 +15,23 @@ export class PostagemService {
         private temaService:TemaService
     ) { } // Construtor da classe (executado quando o service é criado)
 
-    async findAll(): Promise<Postagem[]> { // Método assíncrono que retorna uma lista de Postagens
-
-        return await this.postagemRepository.find() // Busca todas as postagens no banco de dados
-
+     async findAll(): Promise<Postagem[]> { // Método asssincrono que retorna uma lista de Postagem
+        return await this.postagemRepository.find({  // Busca todas as postagens no banco de dados
+            relations: {    // Indica que queremos trazer também o relacionamento
+                tema: true,
+                usuario: true
+            }
+        })
     }
+
 
     async findById(id: number): Promise<Postagem> {  // Método que busca uma postagem pelo ID
         const postagem = await this.postagemRepository.findOne({  // Procura uma postagem no banco
-            where: { id }  // Condição de busca: onde o id seja igual ao id informado
+            where: { id },  // Condição de busca: onde o id seja igual ao id informado
+            relations: {
+                tema: true,
+                usuario: true
+            }
         })
 
         if (!postagem) {  // Verifica se a postagem não foi encontrada

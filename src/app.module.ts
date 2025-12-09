@@ -4,6 +4,9 @@ import { Postagem } from './postagem/entities/postagem.entity';
 import { postagemModule } from './postagem/postagem.module';
 import { TemaModule } from './tema/tema.module';
 import { Tema } from './tema/entities/tema.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { Usuario } from './usuario/entities/usuario.entity';
 
 // Decorator - Etiqueta de Metadados
 @Module({
@@ -13,13 +16,15 @@ import { Tema } from './tema/entities/tema.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '1234',
+      password: 'root',
       database: 'db_blogpessoal',
-      entities: [Postagem, Tema],
+      entities: [Postagem, Tema, Usuario],
       synchronize: true,
   }),
   postagemModule,
-  TemaModule
+  TemaModule,
+  AuthModule,
+  UsuarioModule
 ],
   controllers: [],
   providers: [],
