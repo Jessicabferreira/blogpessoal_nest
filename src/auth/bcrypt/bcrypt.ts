@@ -13,7 +13,7 @@ export class Bcrypt{
     }
 
     // Função que compara a senha criptografa e salva no banco com a senha enviada ao login
-    async compararSenhas(senhaDigitada: string, senhaBanco: string): Promise<boolean> {
+    async compararSenhas(senhaBanco: string, senhaDigitada: string): Promise<boolean> {
         return await bcrypt.compare(senhaDigitada, senhaBanco);
     }
 
