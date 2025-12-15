@@ -3,9 +3,12 @@ import { PostagemService } from "../services/postagem.service";
 import { Postagem } from "../entities/postagem.entity";
 import { DeleteResult } from "typeorm";
 import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 @UseGuards(JwtAuthGuard)     // Colocando essa Anotação aqui, indica que todos os endpoints são protegidos
 @Controller("/postagens")  // Indica que a Classe é uma Controller
+@ApiTags('Postagem')
+@ApiBearerAuth()
 export class PostagemController{
 
     constructor(private readonly postagemService: PostagemService) {}
@@ -16,9 +19,9 @@ export class PostagemController{
         return this.postagemService.findAll();
     }
 
-    @Get("/:id")  // id = "1" => id = 1
+    @Get("/:id_post")  // id = "1" => id = 1
     @HttpCode(HttpStatus.OK)    // Monta a Resposta HTTP para o Front com o status 200
-    findById(@Param('id', ParseIntPipe) id_post: number): Promise<Postagem> {
+    findById(@Param('id_post', ParseIntPipe) id_post: number): Promise<Postagem> {
         return this.postagemService.findById(id_post)
     }
 
@@ -43,7 +46,7 @@ export class PostagemController{
 
     @Delete('/:id')   // Define que este método responde a requisições DELETE com um parâmetro :id na URL
     @HttpCode(HttpStatus.NO_CONTENT)   // Define o status 204 (sem conteúdo), usado quando algo é deletado com sucesso
-    delete(@Param('id', ParseIntPipe) id: number){   // Captura o parâmetro id da URL e converte para número
+    delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult>{   // Captura o parâmetro id da URL e converte para número
         return this.postagemService.delete(id);      // Chama o serviço para excluir a postagem com esse id
 
 }
